@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let flippedCards = [];
   let matchedCards = 0;
 
+  // Shuffle the array using Fisher-Yates shuffle algorithm
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -13,23 +14,34 @@ document.addEventListener("DOMContentLoaded", () => {
     return array;
   }
 
+  // Create the game board with shuffled cards
   function createBoard() {
     shuffle(cardValues);
     cardValues.forEach((value) => {
       const card = document.createElement("div");
       card.classList.add("card");
       card.dataset.value = value;
-      card.textContent = value;
-      card.style.color = "transparent";
+
+      const front = document.createElement("div");
+      front.classList.add("front");
+      front.textContent = value;
+
+      const back = document.createElement("div");
+      back.classList.add("back");
+      back.textContent = "?";
+
+      card.appendChild(front);
+      card.appendChild(back);
       card.addEventListener("click", flipCard);
       gameBoard.appendChild(card);
     });
   }
 
+  // Flip the card to reveal its value
   function flipCard() {
     if (flippedCards.length === 2) return;
 
-    this.style.color = "black";
+    this.classList.add("flip");
     flippedCards.push(this);
 
     if (flippedCards.length === 2) {
@@ -37,12 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Check if the flipped cards match
   function checkForMatch() {
     const [card1, card2] = flippedCards;
 
     if (card1.dataset.value === card2.dataset.value) {
-      card1.classList.add("flip");
-      card2.classList.add("flip");
       matchedCards += 2;
       flippedCards = [];
 
@@ -51,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else {
       setTimeout(() => {
-        card1.style.color = "transparent";
-        card2.style.color = "transparent";
+        card1.classList.remove("flip");
+        card2.classList.remove("flip");
         flippedCards = [];
       }, 1000);
     }
