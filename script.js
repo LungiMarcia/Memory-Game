@@ -22,16 +22,20 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.add("card");
       card.dataset.value = value;
 
+      const cardInner = document.createElement("div");
+      cardInner.classList.add("card-inner");
+
       const front = document.createElement("div");
-      front.classList.add("front");
+      front.classList.add("card-front");
       front.textContent = value;
 
       const back = document.createElement("div");
-      back.classList.add("back");
+      back.classList.add("card-back");
       back.textContent = "?";
 
-      card.appendChild(front);
-      card.appendChild(back);
+      cardInner.appendChild(front);
+      cardInner.appendChild(back);
+      card.appendChild(cardInner);
       card.addEventListener("click", flipCard);
       gameBoard.appendChild(card);
     });
